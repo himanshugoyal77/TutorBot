@@ -96,7 +96,6 @@ const PreferancesPage = ({ params }) => {
           </div>
         </div>
       )}
-      
     </div>
   );
 };
