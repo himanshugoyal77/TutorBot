@@ -1,10 +1,12 @@
 import React from "react";
-
+import CanvasBoard from "./ui/CanvasBoard";
 import {
   Ellipsis,
   School2Icon,
   SendHorizontalIcon,
   PencilRuler,
+  Brush,
+  Hand,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Pinecone } from "@pinecone-database/pinecone";
@@ -37,6 +39,7 @@ export default function ChatComponent({ bookName }) {
   const [pastMessages, setPastMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [draw, setDraw] = useState(false);
+  const [drawWithBrush, setDrawWithBrush] = useState(false);
 
   useEffect(() => {
     // load from firebase firestore
@@ -232,10 +235,12 @@ Conversation so far:
   };
 
   return (
-    <div className="flex h-full flex-col rounded-l-2xl w-full">
-      {draw ? (
+    <div className="relative flex h-full flex-col rounded-l-2xl w-full">
+      {draw && !drawWithBrush ? (
         // <DrawBoard />
         <MemoizedIframe url={url} />
+      ) : draw && drawWithBrush    ? (
+        <CanvasBoard/>
       ) : (
         <>
           <div
@@ -282,7 +287,9 @@ Conversation so far:
           </div>
         </>
       )}
-      <div className="mt-4 h-min flex w-full flex-wrap items-center space-x-2 rounded-full border border-gray-300 p-2 shadow-md">
+
+      {/* Chat Input */}
+      <div className=" mt-4 h-min flex w-full flex-wrap items-center space-x-2 rounded-full border border-gray-300 p-2 shadow-md">
         <button
           className="rounded-full bg-[#6f42a9] p-2 hover:bg-purple-600"
           onClick={handleDraw}
@@ -304,6 +311,23 @@ Conversation so far:
         >
           <SendHorizontalIcon className="bg-inherit" color="white" size={20} />
         </button>
+
+        {draw && (
+          <div className="absolute left-0 bottom-20 p-2 rounded-md overflow-visible z-40 h-min w-min flex items-center justify-center gap-4 bg-inherit">
+            <button
+              className="rounded-full bg-[#6f42a9] p-2 hover:bg-purple-600"
+              onClick={() => setDrawWithBrush(true)}
+            >
+              <Brush className="icon bg-inherit text-white" />
+            </button>
+            <button
+              className="rounded-full bg-[#6f42a9] p-2 hover:bg-purple-600"
+              onClick={() => setDrawWithBrush(false)}
+            >
+              <Hand className="icon bg-inherit text-white" />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

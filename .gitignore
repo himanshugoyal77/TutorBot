@@ -6,6 +6,9 @@
 .pnp.js
 .yarn/install-state.gz
 
+/node_modules
+/.venv
+
 # testing
 /coverage
 
