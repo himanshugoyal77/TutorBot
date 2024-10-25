@@ -47,7 +47,8 @@ export default function ChatComponent({ bookName }) {
   const embeddings2 = new HuggingFaceInferenceEmbeddings({
     apiKey: "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", // In Node.js defaults to process.env.HUGGINGFACEHUB_API_KEY
     //  model: "FacebookAI/xlm-mlm-enro-1024",
-    model: "sentence-transformers/all-mpnet-base-v2",
+    //model: "sentence-transformers/all-mpnet-base-v2",
+    model: "all-miniLM-L6-v2",
   });
 
   const cohereEmbedding = new CohereEmbeddings({
@@ -97,7 +98,7 @@ export default function ChatComponent({ bookName }) {
     try {
       setLoading(true);
       await pineconeClient.getConfig();
-      const pineconeIndex = pineconeClient.index("quill");
+      const pineconeIndex = pineconeClient.index("project");
 
       const memory = new BufferMemory({
         chatHistory: new ChatMessageHistory(pastMessages),
