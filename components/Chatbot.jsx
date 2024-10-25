@@ -223,10 +223,19 @@ Conversation so far:
     setDraw(!draw);
   };
 
+  const url = "https://calc-fe.vercel.app";
+
+  const [isOpen, setIsOpen] = useState(false); // State to track if the panel is open
+
+  const togglePanel = () => {
+    setIsOpen(!isOpen); // Toggle the open state
+  };
+
   return (
     <div className="flex h-full flex-col rounded-l-2xl w-full">
       {draw ? (
-        <DrawBoard />
+        // <DrawBoard />
+        <MemoizedIframe url={url} />
       ) : (
         <>
           <div
@@ -299,3 +308,11 @@ Conversation so far:
     </div>
   );
 }
+
+const Iframe = ({ url }) => {
+  return (
+    <iframe src={url} width={"100%"} height={"100%"} frameborder="0"></iframe>
+  );
+};
+
+const MemoizedIframe = React.memo(Iframe);
