@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  background-color: #141414;
+}
+
+.icon {
+  @apply w-4 h-4 bg-inherit mr-1;
+}
