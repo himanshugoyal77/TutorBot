@@ -67,9 +67,13 @@ export default function Home() {
   };
 
   return (
+<<<<<<< HEAD
     <div className="w-full flex flex-col items-center p-4 gap-4 min-h-screen ">
+=======
+    <div className="w-full flex flex-col items-center p-4 gap-4 bg-[#141414]">
+>>>>>>> 325a411b01b0e0932861fa79b3a8556d42ce9436
       {user ? (
-        <div className="w-full h-full flex flex-col gap-4">
+        <div className="w-full h-full flex flex-col gap-4 bg-[#141414]">
           <div className="w-full h-min mt-12 flex flex-col gap-4 p-5 justify-center items-center">
             <h3 className="mt-5 text-2xl font-bold text-white h-min ">
               Please Verify Your Details

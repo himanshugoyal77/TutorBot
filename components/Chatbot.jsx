@@ -1,6 +1,11 @@
 import React from "react";
 
-import { Ellipsis, School2Icon, SendHorizontalIcon } from "lucide-react";
+import {
+  Ellipsis,
+  School2Icon,
+  SendHorizontalIcon,
+  PencilRuler,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { Pinecone } from "@pinecone-database/pinecone";
 import { PineconeStore } from "@langchain/pinecone";
@@ -21,6 +26,7 @@ import { BufferMemory, ChatMessageHistory } from "langchain/memory";
 import { HumanMessage, AIMessage } from "@langchain/core/messages";
 import { auth, firestore } from "../util/firebase";
 import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import DrawBoard from "./DrawBoard";
 
 export default function ChatComponent({ bookName }) {
   console.log("bookName", bookName);
@@ -30,6 +36,7 @@ export default function ChatComponent({ bookName }) {
   const [loadingIndex, setLoadingIndex] = useState(null); // Track which response is loading
   const [pastMessages, setPastMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [draw, setDraw] = useState(false);
 
   useEffect(() => {
     // load from firebase firestore
@@ -212,52 +219,77 @@ Conversation so far:
     }
   };
 
+  const handleDraw = () => {
+    setDraw(!draw);
+  };
+
+  const url = "https://calc-fe.vercel.app";
+
+  const [isOpen, setIsOpen] = useState(false); // State to track if the panel is open
+
+  const togglePanel = () => {
+    setIsOpen(!isOpen); // Toggle the open state
+  };
+
   return (
-    <div className="flex h-full flex-col rounded-l-2xl p-4 w-full px-8">
-      <div
-        id="chat-section"
-        className="no-scrollbar h-full flex-grow overflow-y-auto rounded-xl py-4 transition-all duration-300 ease-in-out"
-      >
-        {chatState.chat.length === 0 && chatState.status !== "loading" ? (
-          <div className="flex h-min flex-col items-center justify-center rounded-xl bg-gray-200 tcenter shadow-md">
-            <School2Icon size={48} className="tgray-600" />
-            <h2 className="mt-4 h-2 tlg font-semibold tgray-700">
-              How can I assist you today?
-            </h2>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {chatState.chat.map((message, index) => (
-              <div key={index} className="h-min">
-                {/* User Message */}
-                {message.input !== "" && (
-                  <div className="flex justify-end">
-                    <div className="max-w-xs h-min rounded-lg bg-[#6f42a9] p-3 text-white shadow-md">
-                      {message.input}
+    <div className="flex h-full flex-col rounded-l-2xl w-full">
+      {draw ? (
+        // <DrawBoard />
+        <MemoizedIframe url={url} />
+      ) : (
+        <>
+          <div
+            id="chat-section"
+            className="no-scrollbar h-full flex-grow overflow-y-auto rounded-xl py-4 transition-all duration-300 ease-in-out px-8 p-4"
+          >
+            {chatState.chat.length === 0 && chatState.status !== "loading" ? (
+              <div className="flex h-min flex-col items-center justify-center rounded-xl bg-gray-200 tcenter shadow-md">
+                <School2Icon size={48} className="tgray-600" />
+                <h2 className="mt-4 h-2 tlg font-semibold tgray-700">
+                  How can I assist you today?
+                </h2>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {chatState.chat.map((message, index) => (
+                  <div key={index} className="h-min">
+                    {/* User Message */}
+                    {message.input !== "" && (
+                      <div className="flex justify-end">
+                        <div className="max-w-xs h-min rounded-lg bg-[#6f42a9] p-3 text-white shadow-md">
+                          {message.input}
+                        </div>
+                      </div>
+                    )}
+                    {/* Chatbot Response */}
+                    <div className="mt-2  flex justify-start">
+                      <div className="relative h-min max-w-xs rounded-lg bg-gray-100 p-3 tgray-900 shadow-md">
+                        {chatState.status === "loading" &&
+                        loadingIndex === index ? (
+                          <div className="flex items-center text-black bg-inherit">
+                            <Ellipsis className="icon animate-pulse" />
+                          </div>
+                        ) : (
+                          message.response
+                        )}
+                      </div>
                     </div>
                   </div>
-                )}
-                {/* Chatbot Response */}
-                <div className="mt-2  flex justify-start">
-                  <div className="relative h-min max-w-xs rounded-lg bg-gray-100 p-3 tgray-900 shadow-md">
-                    {chatState.status === "loading" &&
-                    loadingIndex === index ? (
-                      <div className="flex items-center text-black bg-inherit">
-                        <Ellipsis className="icon animate-pulse" />
-                      </div>
-                    ) : (
-                      message.response
-                    )}
-                  </div>
-                </div>
+                ))}
+                {error && <p style={{ color: "red" }}>{error}</p>}
               </div>
-            ))}
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            )}
           </div>
-        )}
-      </div>
-
+        </>
+      )}
       <div className="mt-4 h-min flex w-full flex-wrap items-center space-x-2 rounded-full border border-gray-300 p-2 shadow-md">
+        <button
+          className="rounded-full bg-[#6f42a9] p-2 hover:bg-purple-600"
+          onClick={handleDraw}
+        >
+          <PencilRuler className="icon bg-inherit text-white" />
+        </button>
+
         <input
           type="text"
           value={inputText}
@@ -276,3 +308,11 @@ Conversation so far:
     </div>
   );
 }
+
+const Iframe = ({ url }) => {
+  return (
+    <iframe src={url} width={"100%"} height={"100%"} frameborder="0"></iframe>
+  );
+};
+
+const MemoizedIframe = React.memo(Iframe);

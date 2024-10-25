@@ -15,7 +15,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center my-52">
+    <div className="h-full w-full flex justify-center items-center my-52 bg-[#141414]">
       <Button
         onClick={signInWithGoogle}
         text="Sign in with Google"

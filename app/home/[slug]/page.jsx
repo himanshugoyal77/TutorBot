@@ -1,14 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import preferanceData from "../../../common/preferanceData";
 import toast from "react-hot-toast";
 import ChatComponent from "../../../components/Chatbot";
 import textbooks from "../../../common/textbook";
+<<<<<<< HEAD
 import Button from "../../../components/ui/Button";
 import Link from "next/link";
+=======
+import html2canvas from "html2canvas";
+>>>>>>> 325a411b01b0e0932861fa79b3a8556d42ce9436
 
 const PreferancesPage = ({ params }) => {
   const searchParams = useSearchParams();
@@ -39,9 +43,26 @@ const PreferancesPage = ({ params }) => {
   };
 
   console.log(name);
+  const divRef = useRef();
+  const takeSnapshot = async () => {
+    const canvas = await html2canvas(divRef.current);
+    const dataUrl = canvas.toDataURL("image/png");
+
+    // Save the image in the public/assets folder
+    const response = await fetch(dataUrl);
+    const blob = await response.blob();
+    const file = new File([blob], "snapshot.png", { type: "image/png" });
+
+    // Use FileSaver or a similar method to save the file
+    // Note: You can't directly save to the public folder on the client-side.
+    // You need to send it to the server or handle it via API.
+
+    // For demonstration purposes, let's just log the file
+    console.log(file);
+  };
 
   return (
-    <div className="w-full h-[87%]  bg-background flex flex-col items-center justify-start">
+    <div className="w-full h-[87%] flex flex-col items-center justify-start bg-[#141414]">
       {currentQuestion < preferanceData.length ? (
         <div className="w-full h-[80%] flex flex-col items-center justify-center gap-4">
           <h1 className="text-4xl h-8  md:w-[60%] text-center font-semibold text-white bg-inherit mb-8">
@@ -65,6 +86,7 @@ const PreferancesPage = ({ params }) => {
           </div>
         </div>
       ) : (
+<<<<<<< HEAD
 <div className="w-full flex flex-col items-center justify-center gap-4 px-8 relative"> {/* Added relative positioning */}
   <div className="w-full h-full chat flex items-center justify-between">
     <div className="w-1/2 h-full">
@@ -97,6 +119,24 @@ const PreferancesPage = ({ params }) => {
 
       )}
 
+=======
+        <div className="w-full flex flex-col items-center justify-center gap-4 px-8">
+          <div className="w-full h-full chat flex items-center justify-between">
+            <div className="w-1/2 h-full">
+              <MemoizedIframe url={url} />
+            </div>
+            <div className="w-1/2 h-full" ref={divRef}>
+              <ChatComponent
+                bookName={
+                  url.split("/")[url.split("/").length - 1].split(".")[0]
+                }
+              />
+            </div>
+          </div>
+        </div>
+      )}
+      
+>>>>>>> 325a411b01b0e0932861fa79b3a8556d42ce9436
     </div>
   );
 };
