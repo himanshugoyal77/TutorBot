@@ -2,3 +2,16 @@
 .tldraw-wrapper {
   background-color: white !important; /* Or any color you prefer */
 }
+
+.Canvas {
+  /* position: absolute;  /* Positioning the image absolutely */
+
+  width: 90%; /* Full width */
+  height: 90%; /* Full height */
+  object-fit: cover; /* Cover the entire area */
+}
+.CanvasContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}

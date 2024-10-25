@@ -1,11 +1,13 @@
 import React from "react";
-
+import CanvasBoard from "./ui/CanvasBoard";
 import {
   Ellipsis,
   School2Icon,
   SendHorizontalIcon,
   PencilRuler,
   Volume2,
+  Brush,
+  Hand,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Pinecone } from "@pinecone-database/pinecone";
@@ -66,6 +68,7 @@ export default function ChatComponent({ bookName }) {
     setIsDropdownOpen(false); // Close dropdown after selecting a language
     console.log(`Selected language: ${code}`);
   };
+  const [drawWithBrush, setDrawWithBrush] = useState(false);
 
   useEffect(() => {
     // load from firebase firestore
@@ -81,10 +84,10 @@ export default function ChatComponent({ bookName }) {
   console.log(bookName.toString().includes("National_Science_Tectbook"));
 
   const embeddings2 = new HuggingFaceInferenceEmbeddings({
-    apiKey: "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", // In Node.js defaults to process.env.HUGGINGFACEHUB_API_KEY
+    apiKey: "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", // In Node.js defaults to process.env.HUGGINGFACEHUB_API_KEY
     //  model: "FacebookAI/xlm-mlm-enro-1024",
     //model: "sentence-transformers/all-mpnet-base-v2",
-    model: "all-miniLM-L6-v2",
+    //   model: "all-miniLM-L6-v2",
   });
 
   const cohereEmbedding = new CohereEmbeddings({
@@ -361,10 +364,12 @@ Conversation so far:
   };
 
   return (
-    <div className="flex h-full flex-col rounded-l-2xl w-full">
-      {draw ? (
+    <div className="relative flex h-full flex-col rounded-l-2xl w-full">
+      {draw && !drawWithBrush ? (
         // <DrawBoard />
         <MemoizedIframe url={url} />
+      ) : draw && drawWithBrush ? (
+        <CanvasBoard />
       ) : (
         <>
           <div className="relative flex h-full flex-col rounded-l-2xl w-full">
@@ -478,7 +483,9 @@ Conversation so far:
           </div>
         </>
       )}
-      <div className="mt-4 h-min flex w-full flex-wrap items-center space-x-2 rounded-full border border-gray-300 p-2 shadow-md">
+
+      {/* Chat Input */}
+      <div className=" mt-4 h-min flex w-full flex-wrap items-center space-x-2 rounded-full border border-gray-300 p-2 shadow-md">
         <button
           className="rounded-full bg-[#6f42a9] p-2 hover:bg-purple-600"
           onClick={handleDraw}
@@ -500,6 +507,23 @@ Conversation so far:
         >
           <SendHorizontalIcon className="bg-inherit" color="white" size={20} />
         </button>
+
+        {draw && (
+          <div className="absolute left-0 bottom-20 p-2 rounded-md overflow-visible z-40 h-min w-min flex items-center justify-center gap-4 bg-inherit">
+            <button
+              className="rounded-full bg-[#6f42a9] p-2 hover:bg-purple-600"
+              onClick={() => setDrawWithBrush(true)}
+            >
+              <Brush className="icon bg-inherit text-white" />
+            </button>
+            <button
+              className="rounded-full bg-[#6f42a9] p-2 hover:bg-purple-600"
+              onClick={() => setDrawWithBrush(false)}
+            >
+              <Hand className="icon bg-inherit text-white" />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

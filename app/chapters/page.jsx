@@ -58,8 +58,10 @@ const ChaptersPage = () => {
 
       <div className="w-full px-12 mt-20 pb-12">
         <div className="mt-12 w-[80%] h-min grid grid-cols-2 items-center justify-start gap-7 mx-auto">
-          {chapters.map((chapter) => (
-            <div className="w-[80%] cursor-pointer h-min bg-[#1e1e1e] rounded-md p-4 flex items-center justify-between">
+          {chapters.map((chapter,index) => (
+            <div 
+            key={index}
+            className="w-[80%] cursor-pointer h-min bg-[#1e1e1e] rounded-md p-4 flex items-center justify-between">
               <h1 className="text-2xl font-semibold text-white bg-inherit flex items-center justify-start gap-4">
                 <CircleCheckBig
                   onClick={() => {
