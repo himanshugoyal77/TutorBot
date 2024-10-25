@@ -39,7 +39,7 @@ const PreferancesPage = ({ params }) => {
   console.log(name);
 
   return (
-    <div className="w-full h-[87%]  bg-background flex flex-col items-center justify-start">
+    <div className="w-full h-[87%] flex flex-col items-center justify-start bg-[#141414]">
       {currentQuestion < preferanceData.length ? (
         <div className="w-full h-[80%] flex flex-col items-center justify-center gap-4">
           <h1 className="text-4xl h-8  md:w-[60%] text-center font-semibold text-white bg-inherit mb-8">

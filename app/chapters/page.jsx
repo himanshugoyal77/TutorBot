@@ -16,8 +16,8 @@ const ChaptersPage = () => {
   const cover = textbooks.find((book) => book.name === name).cover;
 
   return (
-    <div className="w-full h-full  overflow-y-hidden bg-background pt-8">
-      <div className="flex flex-col items-center h-min">
+    <div className="w-full h-full  overflow-y-hidden pt-8 bg-[#141414]">
+      <div className="flex flex-col items-center h-min ">
         <div className="w-[80%] flex items-center justify-start gap-4 space-x-4">
           <Image src={cover} alt="cover-page" width={230} height={230} />
           <div className="no_of_lessons w-full h-min flex flex-col items-start justify-center gap-2 space-x-2">

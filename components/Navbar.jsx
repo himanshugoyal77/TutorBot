@@ -24,7 +24,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full h-20 flex justify-between items-center p-5">
+    <nav className="w-full h-20 flex justify-between items-center p-5 bg-[#141414]">
       <div className="flex items-center text-xl text-gray-200 gap-4">
         <Image
           src="/Logo.png"

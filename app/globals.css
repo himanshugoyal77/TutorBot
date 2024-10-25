@@ -2,12 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
+@import url('tldraw/tldraw.css');
+
 * {
   height: 100%;
   padding: 0;
   margin: 0;
-  background-color: #141414;
+  background-color: inherit;
 }
+
+.tl-background {
+  background-color: white;
+}
+
+/* Custom styles to prevent DaisyUI from overriding Tldraw */
+.reset-daisy * {
+  all: revert !important;
+}
+
+.tlui-menu-zone {
+  @apply h-min
+}
+
+
 
 .icon {
   @apply w-4 h-4 bg-inherit mr-1;
