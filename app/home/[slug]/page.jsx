@@ -7,12 +7,9 @@ import preferanceData from "../../../common/preferanceData";
 import toast from "react-hot-toast";
 import ChatComponent from "../../../components/Chatbot";
 import textbooks from "../../../common/textbook";
-<<<<<<< HEAD
 import Button from "../../../components/ui/Button";
 import Link from "next/link";
-=======
 import html2canvas from "html2canvas";
->>>>>>> 325a411b01b0e0932861fa79b3a8556d42ce9436
 
 const PreferancesPage = ({ params }) => {
   const searchParams = useSearchParams();
@@ -86,7 +83,6 @@ const PreferancesPage = ({ params }) => {
           </div>
         </div>
       ) : (
-<<<<<<< HEAD
 <div className="w-full flex flex-col items-center justify-center gap-4 px-8 relative"> {/* Added relative positioning */}
   <div className="w-full h-full chat flex items-center justify-between">
     <div className="w-1/2 h-full">
@@ -119,24 +115,6 @@ const PreferancesPage = ({ params }) => {
 
       )}
 
-=======
-        <div className="w-full flex flex-col items-center justify-center gap-4 px-8">
-          <div className="w-full h-full chat flex items-center justify-between">
-            <div className="w-1/2 h-full">
-              <MemoizedIframe url={url} />
-            </div>
-            <div className="w-1/2 h-full" ref={divRef}>
-              <ChatComponent
-                bookName={
-                  url.split("/")[url.split("/").length - 1].split(".")[0]
-                }
-              />
-            </div>
-          </div>
-        </div>
-      )}
-      
->>>>>>> 325a411b01b0e0932861fa79b3a8556d42ce9436
     </div>
   );
 };
