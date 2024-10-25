@@ -67,7 +67,7 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center p-4 gap-4">
+    <div className="w-full flex flex-col items-center p-4 gap-4 min-h-screen ">
       {user ? (
         <div className="w-full h-full flex flex-col gap-4">
           <div className="w-full h-min mt-12 flex flex-col gap-4 p-5 justify-center items-center">

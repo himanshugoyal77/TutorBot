@@ -45,10 +45,10 @@ export default function ChatComponent({ bookName }) {
   console.log(bookName.toString().includes("National_Science_Tectbook"));
 
   const embeddings2 = new HuggingFaceInferenceEmbeddings({
-    apiKey: "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", // In Node.js defaults to process.env.HUGGINGFACEHUB_API_KEY
+    apiKey: "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", // In Node.js defaults to process.env.HUGGINGFACEHUB_API_KEY
     //  model: "FacebookAI/xlm-mlm-enro-1024",
     //model: "sentence-transformers/all-mpnet-base-v2",
-    model: "all-miniLM-L6-v2",
+ //   model: "all-miniLM-L6-v2",
   });
 
   const cohereEmbedding = new CohereEmbeddings({
@@ -109,7 +109,7 @@ export default function ChatComponent({ bookName }) {
         await pineconeIndex.describeIndexStats()
       ).namespaces;
 
-      const vectorStore = await PineconeStore.fromExistingIndex(embeddings2, {
+      const vectorStore = await PineconeStore.fromExistingIndex(cohereEmbedding, {
         pineconeIndex,
         namespace: bookName.toString().includes("National_Science_Tectbook")
           ? "Science"
