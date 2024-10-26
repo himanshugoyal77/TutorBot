@@ -188,6 +188,47 @@ const textbooks = [
       },
     ],
   },
+  {
+    id: 5,
+    name: "Mathematics",
+    cover:
+      "/Books/Math/Screenshot 2024-10-26 051831.png",
+    chapters: [
+      {
+        name: "chapter 1",
+        path: "/Books/Math/math_five.pdf",
+      },
+      {
+        name: "chapter 2",
+        path: "/Books/Math/math_five.pdf",
+      },
+      {
+        name: "chapter 3",
+        path: "/Books/Math/math_five.pdf",
+      },
+      {
+        name: "chapter 4",
+        path: "/Books/Math/math_five.pdf",
+      },
+      {
+        name: "chapter 5",
+        path: "/Books/Math/math_five.pdf",
+      },
+      {
+        name: "chapter 6",
+        path: "/Books/Math/math_five.pdf",
+      },
+      {
+        name: "chapter 7",
+        path: "/Books/Math/math_five.pdf",
+      },
+      {
+        name: "chapter 8",
+        path: "/Books/Math/math_five.pdf",
+      },
+     
+    ],
+  },
 ];
 
 export default textbooks;
