@@ -5,8 +5,10 @@ import cv2
 import numpy as np
 import mediapipe as mp
 from collections import deque
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 class VideoCamera(object):
     def __init__(self):

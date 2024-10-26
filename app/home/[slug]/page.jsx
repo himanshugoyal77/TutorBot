@@ -83,46 +83,47 @@ const PreferancesPage = ({ params }) => {
           </div>
         </div>
       ) : (
-<div className="w-full flex flex-col items-center justify-center gap-4 px-8 relative"> {/* Added relative positioning */}
-  <div className="w-full h-full chat flex items-center justify-between">
-    <div className="w-1/2 h-full">
-      <MemoizedIframe url={url} />
-    </div>
-    <div className="w-1/2 h-full">
-      <ChatComponent
-        bookName={url.split("/")[url.split("/").length - 1].split(".")[0]}
-      />
-    </div>
-  </div>
-  <div className="absolute left-0 bottom-0 m-4 h-10"> {/* Floating button container in bottom-left */}
-  <button className="bg-[#6f42a9] text-white px-4 py-2 rounded-md">
-                <Link
-                  href={{
-                    pathname: `/assesment`,
-                    query: {
-                      name: name,
-                      chapter: chapterName,
-                    },
-                  }}
-                  className="bg-inherit"
-                >
-                  Start Assesment
-                </Link>
-              </button>
-  </div>
-</div>
-
-
+        <div className="w-full h-full flex flex-col items-center justify-center gap-4 px-8 relative">
+          {" "}
+          {/* Added relative positioning */}
+          <div className="w-full h-full chat flex items-center justify-between">
+            <div className="w-1/2 h-full">
+              <MemoizedIframe url={url} />
+            </div>
+            <div className="w-1/2 h-full">
+              <ChatComponent
+                bookName={
+                  url.split("/")[url.split("/").length - 1].split(".")[0]
+                }
+              />
+            </div>
+          </div>
+          <div className="absolute left-0 bottom-0 m-4 h-10">
+            {" "}
+            {/* Floating button container in bottom-left */}
+            <button className="bg-[#6f42a9] text-white px-4 py-2 rounded-md">
+              <Link
+                href={{
+                  pathname: `/assesment`,
+                  query: {
+                    name: name,
+                    chapter: chapterName,
+                  },
+                }}
+                className="bg-inherit"
+              >
+                Start Assesment
+              </Link>
+            </button>
+          </div>
+        </div>
       )}
-
     </div>
   );
 };
 
 const Iframe = ({ url }) => {
-  return (
-    <iframe src={url} width={"100%"} height={"100%"} frameborder="0"></iframe>
-  );
+  return <iframe src={url} width={"100%"} height={"100%"}></iframe>;
 };
 
 const MemoizedIframe = React.memo(Iframe);

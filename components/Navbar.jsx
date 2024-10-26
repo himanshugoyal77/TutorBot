@@ -4,18 +4,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { LogOut } from "lucide-react";
 import { auth } from "../util/firebase";
-import { signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import Button from "./ui/Button";
 import { useRouter } from "next/navigation";
 
 const Navbar = () => {
-  const [user, setUser] = useState(null);
   const router = useRouter();
+  const [globalUser, setGlobalUser] = useState(null);
 
-  const _user = auth.currentUser;
   useEffect(() => {
-    setUser(_user);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log(user);
+      if (user) {
+        setGlobalUser(user);
+      } else {
+        setGlobalUser(null);
+      }
+    });
   }, []);
 
   const handleLogout = async () => {
@@ -70,12 +76,12 @@ const Navbar = () => {
         </div>
       </div>
 
-      {user && (
+      {globalUser && (
         <div className="flex items-center gap-4 space-x-5">
           <div className="avatar cursor-pointer">
             <div className="rounded-full h-10 w-10 ring">
               <Image
-                src={user ? user?.photoURL : "/profile.webp"}
+                src={globalUser ? globalUser?.photoURL : "/profile.webp"}
                 alt="user-image"
                 width={38}
                 height={38}

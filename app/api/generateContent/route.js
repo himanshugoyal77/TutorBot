@@ -1,43 +1,62 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { GoogleAIFileManager } from "@google/generative-ai/server";
 import { NextRequest, NextResponse } from "next/server";
+import multer from "multer";
 
-export async function POST(req)  {
-    if (req.method == 'POST') { // Check if the request method is POST
-    const { prompt, imagePath } = await req.json();
-    // const apiKey = process.env.API_KEY; // It's better to use environment variables for sensitive data
-    const apiKey = "AIzaSyCuQyaZzhmgpn6raGXIyX3Jo0k2DYV0V0Q"
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+export async function POST(req) {
+  try {
+    const { prompt } = req.body;
+    const imageBuffer = req.file.buffer;
+
+    if (!prompt) {
+      return res.status(400).json({ error: "No prompt provided" });
+    }
+
+    const apiKey = process.env.GOOGLE_API_KEY || "your-google-api-key";
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const fileManager = new GoogleAIFileManager(apiKey);
 
-    try {
-      const uploadResult = await fileManager.uploadFile(imagePath, {
-        mimeType: "image/jpeg",
-        displayName: "Jetpack drawing",
-      });
+    // Create a file-like object to upload
+    const file = {
+      buffer: imageBuffer,
+      mimetype: req.file.mimetype,
+      originalname: req.file.originalname,
+    };
 
-      const result = await model.generateContent([
-        prompt,
-        {
-          fileData: {
-            fileUri: uploadResult.file.uri,
-            mimeType: uploadResult.file.mimeType,
-          },
+    // Upload the image
+    const uploadResult = await fileManager.uploadFile(file.buffer, {
+      mimeType: file.mimetype,
+      displayName: file.originalname,
+    });
+
+    console.log(uploadResult);
+
+    // Generate content using the uploaded file URI
+    const result = await model.generateContent([
+      prompt,
+      {
+        fileData: {
+          fileUri: uploadResult.file.uri,
+          mimeType: uploadResult.file.mimeType,
         },
-      ]);
+      },
+    ]);
 
-    return  NextResponse.json({ text: result.response.text() });
-      //  res.status(200).json({ text: result.response.text() });
-    } catch (error) {
-      console.error("Error:", error); // Log the error for debugging
-      return NextResponse.json("Error: No question in the request", {
-        status: 400,
-      });
-    //  res.status(500).json({ error: error.message });
-    }
-  } else {
-    res.setHeader('Allow', ['POST']); // Set allowed methods for CORS
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+    const response = await result.response.text();
+    console.log(response);
+    res.status(200).json({ text: response });
+  } catch (error) {
+    console.error("Error processing request:", error);
+    res.status(500).json({ error: error.message || "Internal server error" });
   }
 }
+
+export const config = {
+  api: {
+    bodyParser: false, // Disable Next.js default body parsing
+  },
+};
